@@ -1,5 +1,6 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
 import { basename, join } from 'node:path'
+import { fileUrlPath } from '../scripts/file-url-path.js'
 import {
   classifyPage,
   firstListCriteria,
@@ -20,7 +21,7 @@ const args = Object.fromEntries(process.argv.slice(2).map((a) => a.replace(/^--/
 const corpus = args.corpus ?? 'blank'
 const gate = Number(args.gate ?? 0.95)
 const concurrency = Number(args.concurrency ?? 12)
-const root = new URL('.', import.meta.url).pathname
+const root = fileUrlPath(import.meta.url)
 const criteria = JSON.parse(await readFile(join(root, '..', 'data', 'criteria.json'), 'utf8')) as Criteria
 
 const BENCH_MAP: Record<string, string> = {
