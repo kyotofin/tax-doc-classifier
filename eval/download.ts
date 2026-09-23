@@ -1,9 +1,10 @@
 import { mkdir, readFile, writeFile, access } from 'node:fs/promises'
 import { join } from 'node:path'
+import { fileUrlPath } from '../scripts/file-url-path.js'
 
 type Row = { id: string; source: string; url: string; pages: number; blankPages: number[] }
 
-const root = new URL('.', import.meta.url).pathname
+const root = fileUrlPath(import.meta.url)
 const manifest = JSON.parse(await readFile(join(root, 'manifest.json'), 'utf8')) as Row[]
 const dir = join(root, 'corpus', 'blank')
 await mkdir(dir, { recursive: true })

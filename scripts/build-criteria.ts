@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile, access } from 'node:fs/promises'
 import { join } from 'node:path'
 import { unzipSync, strFromU8 } from 'fflate'
+import { fileUrlPath } from './file-url-path.js'
 import { irsPdfName, isFormId, labelOf, mefNameToId, parentOf } from '../src/ids.js'
 import { isBlank, isCoverSheet, pdfPageCount, pdfPageLines } from '../src/state.js'
 import type { Criteria, CriteriaEntry } from '../src/classify.js'
@@ -32,7 +33,7 @@ const TITLE_BOILERPLATE =
   /(Department of the Treasury|Internal Revenue Service|OMB No\.? ?\d{4}-\d{4}|Go to www\.irs\.gov\S*|www\.irs\.gov\S*|Attach to .*?\.|▶|►|VOID|CORRECTED|\(if checked\)|Cat\. No\. \S+|For Privacy Act.*|\b(19|20)\d\d\b|\d{4,5})/g
 const BOX_RE = /(?<![\w$,.\-/])(\d{1,2}[a-z]?)\s{1,4}([A-Z][^\n]{4,70}?)(?=\s{3,}|$)/g
 
-const root = new URL('..', import.meta.url).pathname
+const root = fileUrlPath(import.meta.url, '..')
 const corpus = join(root, 'eval', 'corpus', 'blank')
 await mkdir(corpus, { recursive: true })
 
